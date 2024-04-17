@@ -13,7 +13,8 @@
                             <div class="col">
                                 <label for="principal">Principal Amount</label>
                                 <div class="input-group mb-3">
-                                    <span class="input-group-text" id="basic-addon1"><i class="bi bi-currency-rupee"></i></span>
+                                    <span class="input-group-text" id="basic-addon1"><i
+                                            class="bi bi-currency-rupee"></i></span>
                                     <input type="text" class="form-control" id="principal" readonly>
                                 </div>
                             </div>
@@ -26,33 +27,39 @@
                                 </div>
                             </div>
                         </div>
-                        <form action="/loans/update" method="POST">
+                        <form action="{{ route('status.disburse') }}" method="POST">
                             @csrf
-                        <div class="row">
-                            <div class="col">
-                                <label for="">Loan Duration (in months)</label>
-                                <div class="input-group mb-3" id="">
-                                    <span class="input-group-text" id="basic-addon3"><i class="bi bi-clock-fill"></i></span>
-                                    <input type="text" class="form-control" id="repayment_period" name="loan_duration" readonly >
+                            <div class="row">
+                                <div class="col">
+                                    <label for="">Loan Duration (in months)</label>
+                                    <div class="input-group mb-3" id="">
+                                        <span class="input-group-text" id="basic-addon3"><i
+                                                class="bi bi-clock-fill"></i></span>
+                                        <input type="text" class="form-control" id="repayment_period"
+                                            name="loan_duration" readonly>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <label for="">EMI</label>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon1"><i
+                                                class="bi bi-calendar2-check"></i></span>
+                                        <input type="text" class="form-control" id="monthly_emi" name="emi"
+                                            readonly>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col">
-                                <label for="">EMI</label>
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text" id="basic-addon1"><i class="bi bi-calendar2-check"></i></span>
-                                    <input type="text" class="form-control" id="monthly_emi" name="emi" readonly >
-                                </div>
+                            <label for="">Total Amount Payable</label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1"><i
+                                        class="bi bi-currency-rupee"></i></span>
+                                <input type="text" class="form-control" id="total_payable" name="total_payable"
+                                    readonly>
                             </div>
-                        </div>
-                        <label for="">Total Amount Payable</label>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-currency-rupee"></i></span>
-                            <input type="text" class="form-control" id="total_payable" name="total_payable" readonly >
-                        </div>
                     </div>
 
                     <div class="border mt-3 container-fluid">
-                      
+
                         <h5 class="my-3 text-center">Additional Details</h5>
                         <input type="text" id="loan-id" name="loan_id">
 
@@ -60,15 +67,17 @@
                             <div class="col">
                                 <label for="">EMI Start Date</label>
                                 <div class="input-group mb-3" id="">
-                                    <span class="input-group-text" id="basic-addon3"><i class="bi bi-calendar-date"></i></span>
-                                     <input type="date" class="form-control" id="emi_start" name="start_date">
+                                    <span class="input-group-text" id="basic-addon3"><i
+                                            class="bi bi-calendar-date"></i></span>
+                                    <input type="date" class="form-control" id="emi_start" name="start_date">
                                 </div>
                             </div>
                             <div class="col">
                                 <label for="">EMI End Date</label>
                                 <div class="input-group mb-3">
-                                    <span class="input-group-text" id="basic-addon1"><i class="bi bi-calendar-date"></i></span>
-                                    <input type="date" class="form-control" id="emi_end" name="end_date" >
+                                    <span class="input-group-text" id="basic-addon1"><i
+                                            class="bi bi-calendar-date"></i></span>
+                                    <input type="date" class="form-control" id="emi_end" name="end_date">
                                 </div>
                             </div>
                         </div>
@@ -76,9 +85,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Disburse Amount</button>
+                    <button type="submit" name="disburse" value="disburse" class="btn btn-primary">Disburse Amount</button>
                 </div>
-            </form>
+                </form>
             </div>
         </div>
     </div>
@@ -89,7 +98,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="exampleModalLabel">Create a New Application</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
                     <form action="/create" method="post">
                         @csrf
@@ -181,31 +191,39 @@
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($loanApplications as $loanApplication)
-                                        @foreach ($loanApplication->loans as $loan)
-                                            @if ($loan->status == 'pending')
-                                                <tr>
-                                                    <td>{{ $loan->id }}</td>
-                                                    <td>{{ $loanApplication['name'] }}</td>
-                                                    <td>{{ $loan->loan_amount }}</td>
-                                                    <td>{{ $loan->interest_rate }}</td>
-                                                    <td><span
-                                                            class="rounded-pill {{ $loan->status == 'pending' ? 'bg-warning' : 'bg-success' }} fs-6 text-white px-2">{{ $loan->status }}</span>
-                                                    </td>
-                                                    <td>{{ ucwords($loan->loan_type) }}</td>
-                                                    <td>
-                                                        <div class="d-flex">
-                                                            <a href="reject/{{ $loan->id }}" class="btn"
-                                                                title="reject"><i
-                                                                    class="bi bi-x-circle-fill text-danger fs-5"></i></a>
-                                                            <a href="accept/{{ $loan->id }}" class="btn"
-                                                                title="accept"><i
-                                                                    class="bi bi-hand-thumbs-up-fill text-success fs-5"></i></a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endif
-                                        @endforeach
+                                    @foreach ($loanApplications as $loan)
+                                        @if ($loan->status == 'pending')
+                                            <tr>
+                                                <td>{{ $loan->id }}</td>
+                                                <td>{{ $loan->employee->name }}</td>
+                                                <td>{{ $loan->loan_amount }}</td>
+                                                <td>{{ $loan->interest_rate }}</td>
+                                                <td><span
+                                                        class="rounded-pill {{ $loan->status == 'pending' ? 'bg-warning' : 'bg-success' }} fs-6 text-white px-2">{{ $loan->status }}</span>
+                                                </td>
+                                                <td>{{ ucwords($loan->loan_type) }}</td>
+                                                <td>
+                                                    <div class="d-flex">
+                                                        <form action="{{ route('status.update', $loan->id) }}" method="POST">
+                                                            @csrf
+                                                            @method('PUT') 
+                                        
+                                                        
+                                                            <!-- Button for reject operation -->
+                                                            <button type="submit" name="reject" value="reject" class="btn" title="Reject">
+                                                                <i class="bi bi-x-circle-fill text-danger fs-5"></i>
+                                                            </button>
+                                                        
+                                                            <!-- Button for accept operation -->
+                                                            <button type="submit" name="accept" value="accept" class="btn" title="Accept">
+                                                                <i class="bi bi-hand-thumbs-up-fill text-success fs-5"></i>
+                                                            </button>
+                                                        </form>
+                                                        
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endif
                                     @endforeach
                                 </tbody>
 
@@ -243,32 +261,31 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($loanApplications as $loanApplication)
-                                        @foreach ($loanApplication->loans as $loan)
-                                            @if ($loan->status == 'accepted')
-                                                <tr>
-                                                    <td>{{ $loan->id }}</td>
-                                                    <td>{{ $loanApplication['name'] }}</td>
-                                                    <td>{{ $loan->loan_amount }}</td>
-                                                    <td>{{ $loan->interest_rate }}</td>
-                                                    <td><span
-                                                            class="rounded-pill {{ $loan->status == 'pending' ? 'bg-warning' : 'bg-success' }} fs-6 text-white px-2">{{ $loan->status }}</span>
-                                                    </td>
-                                                    <td>{{ ucwords($loan->loan_type) }}</td>
-                                                    <td>
-                                                        <div class="d-flex">
-                                                            <a href="reject/{{ $loan->id }}" class="btn"
-                                                                title="reject"><i
-                                                                    class="bi bi-x-circle-fill text-danger fs-5"></i></a>
-                                                            <a href="" id="disburse" class="btn"
-                                                                title="disburse"
-                                                                data-loan-id="{{ $loan->id }}" data-loan-period="{{ $loan->repayment_period}}"><i
-                                                                    class="bi bi-cash-stack fs-5 text-success"></i></a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endif
-                                        @endforeach
+                                    @foreach ($loanApplications as $loan)
+                                        @if ($loan->status == 'accepted')
+                                            <tr>
+                                                <td>{{ $loan->id }}</td>
+                                                <td>{{ $loan->employee->name }}</td>
+                                                <td>{{ $loan->loan_amount }}</td>
+                                                <td>{{ $loan->interest_rate }}</td>
+                                                <td><span
+                                                        class="rounded-pill {{ $loan->status == 'pending' ? 'bg-warning' : 'bg-success' }} fs-6 text-white px-2">{{ $loan->status }}</span>
+                                                </td>
+                                                <td>{{ ucwords($loan->loan_type) }}</td>
+                                                <td>
+                                                    <div class="d-flex">
+                                                       
+                                                        <a href="reject/{{ $loan->id }}" class="btn"
+                                                            title="reject"><i
+                                                                class="bi bi-x-circle-fill text-danger fs-5"></i></a>
+                                                        <a href="" id="disburse" class="btn"
+                                                            title="disburse" data-loan-id="{{ $loan->id }}"
+                                                            data-loan-period="{{ $loan->repayment_period }}"><i
+                                                                class="bi bi-cash-stack fs-5 text-success"></i></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endif
                                     @endforeach
 
                                 </tbody>
@@ -302,24 +319,21 @@
                                 </tr>
                             </thead>
 
-                            @foreach ($loanApplications as $loanApplication)
-                                <tbody>
-
-                                    @foreach ($loanApplication->loans as $loan)
-                                        @if ($loan->status == 'rejected')
-                                            <tr>
-                                                <td>{{ $loan->id }}</td>
-                                                <td>{{ $loanApplication['name'] }}</td>
-                                                <td>{{ $loan->loan_amount }}</td>
-                                                <td>{{ $loan->interest_rate }}</td>
-                                                <td><span
-                                                        class="rounded-pill bg-danger fs-6 text-white px-2">{{ $loan->status }}</span>
-                                                </td>
-                                                <td>{{ ucwords($loan->loan_type) }}</td>
-                                            </tr>
-                                        @endif
-                                    @endforeach
-                            @endforeach
+                            <tbody>
+                                @foreach ($loanApplications as $loan)
+                                    @if ($loan->status == 'rejected')
+                                        <tr>
+                                            <td>{{ $loan->id }}</td>
+                                            <td>{{ $loan->employee->name }}</td>
+                                            <td>{{ $loan->loan_amount }}</td>
+                                            <td>{{ $loan->interest_rate }}</td>
+                                            <td><span
+                                                    class="rounded-pill bg-danger fs-6 text-white px-2">{{ $loan->status }}</span>
+                                            </td>
+                                            <td>{{ ucwords($loan->loan_type) }}</td>
+                                        </tr>
+                                    @endif
+                                @endforeach
 
                             </tbody>
 

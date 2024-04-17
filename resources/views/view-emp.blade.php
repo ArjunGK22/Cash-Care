@@ -7,6 +7,66 @@
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Add New User</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <form action="{{ route('employees.store') }}" method="post">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group my-2">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="fname" placeholder="Enter your name"
+                                name="name">
+                            <x-error prop="name" />
+                        </div>
+                        <div class="form-group my-2">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" placeholder="Enter your email"
+                                name="email">
+                            <x-error prop="email" />
+
+                        </div>
+                        <div class="form-group my-2">
+                            <label for="phone">Phone</label>
+                            <input type="tel" class="form-control" id="phone"
+                                placeholder="Enter your phone number" name="phone">
+                            <x-error prop="phone" />
+
+                        </div>
+                        <div class="form-group my-2">
+                            <label for="dob">Date of Birth</label>
+                            <input type="date" class="form-control" id="dob" name="dob">
+                            <x-error prop="dob" />
+
+                        </div>
+                        <div class="form-group my-2">
+                            <label for="aadhar">Aadhar Number</label>
+                            <input type="text" class="form-control" id="aadhar"
+                                placeholder="Enter your Aadhar number" name="aadhar_no">
+                            <x-error prop="aadhar_no" />
+
+                        </div>
+                        <div class="form-group my-2">
+                            <label for="pan">PAN Number</label>
+                            <input type="text" class="form-control" id="pan"
+                                placeholder="Enter your PAN number" name="pan_no">
+                            <x-error prop="pan_no" />
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <input type="submit" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Update User</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
                 <form action="/create/employee" method="post">
                     @csrf
                     <div class="modal-body">
@@ -106,7 +166,9 @@
                             <td>{{ $user->pan_no }}</td>
                             {{-- <td>{{$user->dob}}</td> --}}
                             <td><span class="rounded-pill bg-success fs-6 text-white px-2">Active</span></td>
-                            <td></td>
+                            <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal">
+                                <i class="bi bi-pencil-fill"></i>
+                            </button></td>
                         </tr>
                     @endforeach
                 </tbody>

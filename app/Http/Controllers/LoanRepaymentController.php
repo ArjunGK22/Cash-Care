@@ -19,15 +19,16 @@ class LoanRepaymentController extends Controller
 
         $emi_data = Loan::with(['emis' => function ($query) {
             $query->where('payment_status', 'unpaid')
-            // ->whereDate('billing_date', '>=', Carbon::now()->toDateString())
-            // ->whereMonth('billing_date', '=', Carbon::now()->month)
-;
+                // ->whereDate('billing_date', '>=', Carbon::now()->toDateString())
+                // ->whereMonth('billing_date', '=', Carbon::now()->month)
+            ;
         }])
-        ->get();
+            ->get();
 
         // return $emi_data;
         return view('/loan-repayment', ['emiData' => $emi_data]);
     }
+
 
     public function loanRepaymentView($id)
     {
@@ -38,9 +39,9 @@ class LoanRepaymentController extends Controller
 
         $emi_data = Emi::with('loan.employee')->find($id);
 
-        
-        
-        
+
+
+
 
         // return $emi_data;  
 
@@ -49,19 +50,16 @@ class LoanRepaymentController extends Controller
 
     public function repayment(Request $request)
     {
-        // return response()->json(['msg' => 'receiveed']);
 
         $emi = Emi::find($request->emi_id);
 
-        // return $emi;
-
-
-
         switch ($request->input('action')) {
 
-            case 'Repay':
+            case 'repay':
                 // dd('EMi paid: ' .$request->emi_paid .'Emi payable: ' .$request->emi_payable);
-                $remaining_balance = $request->emi_payable - $request->emi_paid;
+                $remaining_balance = intval($request->emi_payable - $request->emi_paid);
+
+                // dd($remaining_balance);
 
                 if ($remaining_balance == 0) {
 
@@ -69,12 +67,14 @@ class LoanRepaymentController extends Controller
 
                     if ($emi['remaining_emi'] - 1 == 0) {
                         //close the loan
+
                         $emi->update([
                             'payment_status' => 'paid',
                             'remaining_emi_balance' => 0
-    
+
                         ]);
 
+                        // dd("updated");
                         Payment::create([
                             'emi_id' => $request->emi_id,
                             'payment_amount' => $request->emi_paid + $request->fine_amount,
@@ -82,42 +82,40 @@ class LoanRepaymentController extends Controller
                         ]);
 
                         $loan = Loan::find($request->loan_id);
-                        
+
                         $loan->update([
-                           'status' => 'closed' 
+                            'status' => 'closed'
+                        ]);
+                    } else {
+
+                        $emi->update([
+                            'payment_status' => 'paid',
+                            'remaining_emi_balance' => 0
+
                         ]);
 
+                        $next_emi_date = Carbon::now()->addMonth()->startOfMonth()->addDays(4);
+                        // return $next_emi_date;
+                        $emi->create([
+                            'loan_id' => $request->loan_id,
+                            'emi_number' => $emi['emi_number'] + 1,
+                            'emi_amount' => $emi['emi_amount'],
+                            'billing_date' => $next_emi_date,
+                            'due_date' => Carbon::now()->addMonth()->startOfMonth()->addDays(14),
+                            'remaining_emi_balance' => $emi['emi_amount'],
+                            'payment_status' => 'unpaid',
+                            'remaining_emi' => $emi['remaining_emi'] - 1
+
+                        ]);
+
+
+                        //create a payment record
+                        Payment::create([
+                            'emi_id' => $request->emi_id,
+                            'payment_amount' => $request->emi_paid + $request->fine_amount,
+                            'payment_date' => now(),
+                        ]);
                     }
-
-                    
-
-                    $emi->update([
-                        'payment_status' => 'paid',
-                        'remaining_emi_balance' => 0
-
-                    ]);
-
-                    $next_emi_date = Carbon::now()->addMonth()->startOfMonth()->addDays(4);
-                    // return $next_emi_date;
-                    $emi->create([
-                        'loan_id' => $request->loan_id,
-                        'emi_number' => $emi['emi_number'] + 1,
-                        'emi_amount' => $emi['emi_amount'],
-                        'billing_date' => $next_emi_date,
-                        'due_date' => Carbon::now()->addMonth()->startOfMonth()->addDays(14),
-                        'remaining_emi_balance' => $emi['emi_amount'],
-                        'payment_status' => 'unpaid',
-                        'remaining_emi' => $emi['remaining_emi'] - 1
-
-                    ]);
-
-
-                    //create a payment record
-                    Payment::create([
-                        'emi_id' => $request->emi_id,
-                        'payment_amount' => $request->emi_paid + $request->fine_amount,
-                        'payment_date' => now(),
-                    ]);
                 } else {
 
                     $emi->update([
@@ -137,13 +135,12 @@ class LoanRepaymentController extends Controller
 
                 return redirect('/loans');
                 break;
-
-            
         }
     }
 
 
-    public function reschedule(Request $request){
+    public function reschedule(Request $request)
+    {
 
         $emi = Emi::find($request->emiId);
 
@@ -161,9 +158,5 @@ class LoanRepaymentController extends Controller
         ]);
 
         return redirect('loans/repayment');
-        
-        
-
-
     }
 }

@@ -29,35 +29,23 @@
                 </thead>
                 <tbody>
 
-                    @foreach ($emiData as $emis)
-                        @foreach ($emis->emis as $emi)
+                    @foreach ($emiData as $emi)
                             <tr>
                                 <td>{{ $emi->id }}</td>
-                                <td>{{ $emi['loan_id'] }}</td>
+                                <td>{{ $emi->loan->id }}</td>
                                 <td>{{ $emi->emi_amount }}</td>
                                 <td>{{ $emi->remaining_emi_balance }}</td>
                                 <td>{{ $emi->payment_status }}</td> <!-- Accessing emi directly from $repays -->
                                 <td>{{ $emi->due_date }}</td>
-                                {{-- <td>
-                                    @if (date('Y-m-d') < $loan->start_date)
-                                        <span class="rounded-pill bg-warning fs-6 text-white px-2">Unpaid
-                                        </span>
-                                    @else
-                                        <span class="rounded-pill bg-danger fs-6 text-white px-2">Overdue
-                                        </span>
-                                    @endif
-
-
-                                </td> --}}
+                           
                                 <td>
                                     <div class="d-flex">
-                                        <a href="repayment/{{ $emis->id }}" class="btn" title="payment"><i
+                                        <a href="repayment/{{ $emi->id }}" class="btn" title="payment"><i
                                                 class="bi bi-credit-card text-success"></i></a>
 
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach
                     @endforeach
                 </tbody>
 

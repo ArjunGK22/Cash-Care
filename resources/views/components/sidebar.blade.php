@@ -19,7 +19,7 @@
                         </a>
                         <ul class="collapse show nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
                             <li class="w-100">
-                                <a href="/employees" class="nav-link px-0 ms-4"> <span class="d-none d-sm-inline">View
+                                <a href="{{ route('employees.index')}}" class="nav-link px-0 ms-4"> <span class="d-none d-sm-inline">View
                                         Employees</span> </a>
                             </li>
 
@@ -30,15 +30,19 @@
                             <i class="fs-4 bi bi-cash-stack"></i> <span class="ms-1 d-none d-sm-inline">Loan</span><i class="bi bi-caret-down-fill ms-2"></i></a>
                         <ul class="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">
                             <li>
-                                <a href="/loans" class="nav-link px-0"> <span class="d-none d-sm-inline">
+                                <a href="{{route('loans.index')}}" class="nav-link px-0"> <span class="d-none d-sm-inline">
                                         Active Loans</span></a>
                             </li>
                             <li class="w-100">
-                                <a href="/loans/repayment" class="nav-link px-0"> <span
+                                <a href="{{ route('repayment.index')}}" class="nav-link px-0"> <span
                                         class="d-none d-sm-inline">Repayment</span></a>
                             </li>
                             <li>
-                                <a href="/loans/applications" class="nav-link px-0"> <span class="d-none d-sm-inline">Pending
+                                <a href="{{ route('status.index') }}" class="nav-link px-0"> <span class="d-none d-sm-inline">Pending
+                                        Applications</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('loans.closed') }}" class="nav-link px-0"> <span class="d-none d-sm-inline">Closed
                                         Applications</a>
                             </li>
 

@@ -13,7 +13,7 @@
                         <p class="text-danger">You are freezing the EMI. Kindly select the restart date when it has to
                             be paid.</p>
                         <div class="input-group">
-                            <input type="text" id="emi_id" name="emiId">
+                            <input type="hidden" id="emi_id" name="emiId">
                             <input type="date" name="restart_date" class="form-control" min="{{ date('Y-m-d') }}" />
                         </div>
                     </div>
@@ -129,14 +129,14 @@
                                 <div class="card-footer">
                                     <!-- Populate hidden input values if needed -->
                                     <!-- For example, repayment id -->
-                                    <input type="test" value="{{ $user->id }}" name="emi_id" />
-                                    <input type="test" value="{{ $user->loan_id }}"
+                                    <input type="hidden" value="{{ $user->id }}" name="emi_id" />
+                                    <input type="hidden" value="{{ $user->loan_id }}"
                                         name="loan_id" />
                                     <!-- Populate other hidden input values similarly -->
                                     <button class="btn btn-primary mr-2" id="reschedule" type="button"
                                         data-emiId ="{{ $user->id }}">Reschedule</button>
                                     <button class="btn btn-success mr-2" type="submit" name="action"
-                                        value="Repay" id="repay">Repay</button>
+                                        value="repay" id="repay">Repay</button>
                                     <button class="btn btn-danger">Other</button>
                                 </div>
                             </div>
