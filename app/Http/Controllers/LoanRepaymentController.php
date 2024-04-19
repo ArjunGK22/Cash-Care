@@ -19,8 +19,8 @@ class LoanRepaymentController extends Controller
 
         $emi_data = Loan::with(['emis' => function ($query) {
             $query->where('payment_status', 'unpaid')
-                // ->whereDate('billing_date', '>=', Carbon::now()->toDateString())
-                // ->whereMonth('billing_date', '=', Carbon::now()->month)
+                ->whereDate('billing_date', '>=', Carbon::now()->toDateString())
+                ->whereMonth('billing_date', '=', Carbon::now()->month)
             ;
         }])
             ->get();
@@ -32,22 +32,12 @@ class LoanRepaymentController extends Controller
 
     public function loanRepaymentView($id)
     {
-
-        // $loan_data = Employee::with(['loans.emis' => function ($query) {
-        //     $query->where('payment_status', 'unpaid')->select('id');
-        // }])->find($id)->pluck('loans.emis.*.id')->flatten();
-
         $emi_data = Emi::with('loan.employee')->find($id);
-
-
-
-
-
-        // return $emi_data;  
-
+        
         return view('/repayment', ['user' => $emi_data]);
     }
 
+// split 
     public function repayment(Request $request)
     {
 
@@ -129,8 +119,6 @@ class LoanRepaymentController extends Controller
                         'payment_date' => now(),
                     ]);
                 }
-
-
 
 
                 return redirect('/loans');

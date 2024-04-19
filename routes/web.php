@@ -29,7 +29,7 @@ Route::get('/', function () {
 Route::view('/dashboard','dashboard');
 
 //Employee Operations Route
-Route::resource('employees', UserController::class);
+Route::resource('employees', UserController::class)->parameters(['employees' => 'employee']);
 
 //Loan Application Routes
 Route::resource('loans', LoanApplicationsController::class);
