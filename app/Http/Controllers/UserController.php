@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserPostRequest;
 use App\Models\Employee;
+use Exception;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 
@@ -49,9 +50,9 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
+    public function show(Employee $employee)
+    { 
+        return view('emp-details')->with('empData',$employee);
     }
 
     /**
@@ -61,22 +62,35 @@ class UserController extends Controller
 
     {
         echo "heloo";
-        //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UserPostRequest $request, Employee $employee)
     {
-        //
+
+        
+        try{
+
+            $data = $request->validated();
+            
+            $employee->update($data);
+    
+            return redirect()->route('employees.index');
+        }
+        catch (Exception $e){
+            return $e;
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Employee $employee)
     {
-        //
+        $employee->delete();
+    
+        return redirect()->route('employees.index')->with('success', 'Employee deleted successfully');
     }
 }

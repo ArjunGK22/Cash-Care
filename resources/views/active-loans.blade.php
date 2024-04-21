@@ -139,7 +139,7 @@
 
 
                                         <!-- Button for reject operation -->
-                                        <button type="submit" name="cancel" value="cancel" class="btn"
+                                        <button type="submit" name="status" value="cancel" class="btn"
                                             title="Cancel">
                                             <i class="bi bi-x-circle-fill text-danger fs-5"></i>
                                         </button>

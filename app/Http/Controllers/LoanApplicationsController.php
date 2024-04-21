@@ -85,11 +85,9 @@ class LoanApplicationsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Loan $loan)
     {
-        //
-        $loan = Loan::with('employee', 'emis')->find($id);
-        $employeeData = Employee::all();
+        // $loan = Loan::with('employee', 'emis')->find($id);
 
         // return $loan;
         return view('loanDetails', ['loan' => $loan]);

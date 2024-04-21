@@ -22,19 +22,17 @@ use App\Http\Controllers\RepaymentController;
 |
 */
 
-Route::get('/', function () {
-    return view('login');
-});
 
+
+Route::view('/','login');
 Route::view('/dashboard','dashboard');
 
 //Employee Operations Route
-Route::resource('employees', UserController::class)->parameters(['employees' => 'employee']);
+Route::resource('employees', UserController::class);
 
 //Loan Application Routes
 Route::resource('loans', LoanApplicationsController::class);
 Route::get('/status/closed', [LoanApplicationsController::class, 'closed'])->name('loans.closed');
-
 
 //Loan Status Routes
 Route::resource('status', LoanApplicationStatusController::class);
@@ -42,13 +40,10 @@ Route::post('/status/disburse', [LoanApplicationStatusController::class, 'disbur
 
 //Loan Repayment Route
 Route::resource('repayment',RepaymentController::class);
-
-
-
-Route::post('/loans/repayment',[LoanRepaymentController::class, 'repayment']);
-Route::post('/loans/repayment/reschedule',[LoanRepaymentController::class, 'reschedule']);
-
-
+Route::prefix('/loans/repayment')->group(function(){
+    Route::post('/',[LoanRepaymentController::class, 'repayment']);
+    Route::post('/reschedule',[LoanRepaymentController::class, 'reschedule']);
+});
 
 //login route
 Route::post('/login',[LoginController::class, 'login']);

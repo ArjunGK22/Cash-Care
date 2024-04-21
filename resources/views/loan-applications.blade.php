@@ -61,7 +61,7 @@
                     <div class="border mt-3 container-fluid">
 
                         <h5 class="my-3 text-center">Additional Details</h5>
-                        <input type="text" id="loan-id" name="loan_id">
+                        <input type="hidden" id="loan-id" name="loan_id">
 
                         <div class="row">
                             <div class="col">
@@ -210,12 +210,12 @@
                                         
                                                         
                                                             <!-- Button for reject operation -->
-                                                            <button type="submit" name="reject" value="reject" class="btn" title="Reject">
+                                                            <button type="submit" name="status" value="rejected" class="btn" title="Reject">
                                                                 <i class="bi bi-x-circle-fill text-danger fs-5"></i>
                                                             </button>
                                                         
                                                             <!-- Button for accept operation -->
-                                                            <button type="submit" name="accept" value="accept" class="btn" title="Accept">
+                                                            <button type="submit" name="status" value="accepted" class="btn" title="Accept">
                                                                 <i class="bi bi-hand-thumbs-up-fill text-success fs-5"></i>
                                                             </button>
                                                         </form>

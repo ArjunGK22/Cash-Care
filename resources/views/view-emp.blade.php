@@ -166,16 +166,22 @@
                             <td>{{ $user->pan_no }}</td>
                             {{-- <td>{{$user->dob}}</td> --}}
                             <td><span class="rounded-pill bg-success fs-6 text-white px-2">Active</span></td>
-                            <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal">
-                                <i class="bi bi-pencil-fill"></i>
-                            </button></td>
+                            <td class="d-flex gap-2">
+
+                                <a href="{{ route('employees.show', ['employee' => $user->id]) }}" class="btn btn-info">
+                                    <i class="bi bi-eye-fill"></i> </a>
+                                <form action="{{route('employees.destroy',['employee' => $user->id
+                                ])}}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">
+                                        <i class="bi bi-archive"></i> </button>
+                                </form>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-
-
-
         </div>
 
 
