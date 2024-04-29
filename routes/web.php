@@ -40,9 +40,12 @@ Route::post('/status/disburse', [LoanApplicationStatusController::class, 'disbur
 
 //Loan Repayment Route
 Route::resource('repayment',RepaymentController::class);
+
 Route::prefix('/loans/repayment')->group(function(){
+
     Route::post('/',[LoanRepaymentController::class, 'repayment']);
     Route::post('/reschedule',[LoanRepaymentController::class, 'reschedule']);
+
 });
 
 //login route

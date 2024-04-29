@@ -133,7 +133,7 @@
                                 <div class="d-flex">
                                     <a href="/loans/{{ $loan->id }}" class="btn" title="view"><i
                                             class="bi bi-eye-fill"></i></a>
-                                    <form action="{{ route('status.update', $loan->id) }}" method="POST">
+                                    {{-- <form action="{{ route('status.update', $loan->id) }}" method="POST">
                                         @csrf
                                         @method('PUT')
 
@@ -144,7 +144,7 @@
                                             <i class="bi bi-x-circle-fill text-danger fs-5"></i>
                                         </button>
 
-                                    </form>
+                                    </form> --}}
 
                                 </div>
                             </td>

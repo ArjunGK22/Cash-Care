@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 
 class UserPostRequest extends FormRequest
 {
@@ -29,7 +30,7 @@ class UserPostRequest extends FormRequest
 
         $rules = [
             'name' => 'required|string',
-            'phone' => 'required|numeric|min:10|unique:employees,phone',
+            'phone' => 'required|regex:/^\d{10}$/|unique:employees,phone',
             'email' => 'required|email|unique:employees,email',
             'dob' => 'required',
             'aadhar_no' => 'required|regex:/^\d{12}$/',
@@ -51,4 +52,12 @@ class UserPostRequest extends FormRequest
 
         return $rules;
     }
+
+    protected function failedValidation(Validator $validator)
+    {
+        session()->flash('message', 'There were some issues with your submission. Please check the form and try again.');
+        parent::failedValidation($validator);
+    }
+
+
 }

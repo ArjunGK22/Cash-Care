@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Emi;
 use App\Models\Loan;
 use Illuminate\Http\Request;
@@ -14,12 +15,25 @@ class RepaymentController extends Controller
     public function index()
     {
         //list the pending emis
-        $emi_data = Emi::where('payment_status','unpaid')
+        // $emi_data = Emi::where('payment_status','unpaid')
+        //     ->with('loan')
+        //     ->get();
+
+        // return view('loan-repayment')->with('emiData',$emi_data);
+
+        // Get the current month and year
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
+
+        $emi_data = Emi::where('payment_status', 'unpaid')
+            ->whereMonth('billing_date', $currentMonth)
+            ->whereYear('billing_date', $currentYear)
             ->with('loan')
             ->get();
 
-        return view('loan-repayment')->with('emiData',$emi_data);
+        return view('loan-repayment')->with('emiData', $emi_data);
     }
+
 
     /**
      * Show the form for creating a new resource.

@@ -15,14 +15,13 @@ class LoanRepaymentController extends Controller
     public function view()
     {
         $emi_data = Loan::with(['emis' => function ($query) {
-            $query->where('payment_status', 'unpaid')
-                ->whereDate('billing_date', '>=', Carbon::now()->toDateString())
-                ->whereMonth('billing_date', '=', Carbon::now()->month);
-        }])
+                $query->where('payment_status', 'unpaid')
+                    ->whereYear('billing_date', Carbon::now()->year)
+                    ->whereMonth('billing_date', Carbon::now()->month);
+            }])
             ->get();
-
-        // return $emi_data;
-        return view('/loan-repayment', ['emiData' => $emi_data]);
+    
+        return view('loan-repayment', ['emiData' => $emi_data]);
     }
 
     public function loanRepaymentView($id)
@@ -38,7 +37,7 @@ class LoanRepaymentController extends Controller
 
         $emi = Emi::find($request->emi_id);
         $remaining_balance = intval($request->emi_payable - $request->emi_paid);
-        
+
         if ($remaining_balance == 0) {
             //check whether its a last emi
             if ($emi['remaining_emi'] - 1 == 0) {
@@ -99,20 +98,47 @@ class LoanRepaymentController extends Controller
     }
 
 
+    // public function reschedule(Request $request)
+    // {
+    //     // dd($request->all());
+    //     $emi = Emi::find($request->emiId);
+    //     // dd($emi);
+
+    //     $restart_date = Carbon::createFromFormat('Y-m-d', $request->restart_date);
+    //     $restart_date = $restart_date->day(5);
+    //     $due_date = Carbon::createFromFormat('Y-m-d', $request->restart_date);
+    //     $due_date = $due_date->day(15);
+
+    //     $emi->update([
+    //         'billing_date' => $restart_date,
+    //         'due_date' => $due_date,
+    //     ]);
+    //     return redirect()->route('repayment.index')->with('message','Rescheduled successfully!');
+    // }
+
     public function reschedule(Request $request)
     {
-
         $emi = Emi::find($request->emiId);
 
-        $restart_date = Carbon::createFromFormat('Y-m-d', $request->restart_date);
-        $restart_date = $restart_date->day(5);
-        $due_date = Carbon::createFromFormat('Y-m-d', $request->restart_date);
-        $due_date = $due_date->day(15);
+        // Calculate the number of months between the current month and the restart date
+        $restartDate = Carbon::createFromFormat('Y-m-d', $request->restart_date);
+        $numberOfMonths = Carbon::now()->diffInMonths($restartDate);
+
+        // Update the end_date in the Loan table by adding the number of months
+        $loan = $emi->loan;
+        $loan->update([
+            'end_date' => $loan->end_date->addMonths($numberOfMonths)->toDateString()
+        ]);
+
+        // Update the billing date and due date for the Emi
+        $restart_date = $restartDate->day(5);
+        $due_date = $restartDate->day(15);
 
         $emi->update([
             'billing_date' => $restart_date,
             'due_date' => $due_date,
         ]);
-        return redirect('loans/repayment');
+
+        return redirect()->route('repayment.index')->with('message', 'Rescheduled successfully!');
     }
 }

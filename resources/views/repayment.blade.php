@@ -7,7 +7,7 @@
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="reschedule" method="POST">
+                <form action="/loans/repayment/reschedule" method="POST">
                     @csrf
                     <div class="modal-body">
                         <p class="text-danger">You are freezing the EMI. Kindly select the restart date when it has to
@@ -137,8 +137,7 @@
                                         data-emiId ="{{ $user->id }}">Reschedule</button>
                                     <button class="btn btn-success mr-2" type="submit" name="action"
                                         value="repay" id="repay">Repay</button>
-                                    <button class="btn btn-danger">Other</button>
-                                </div>
+                                    </div>
                             </div>
                         </div>
                     </div>

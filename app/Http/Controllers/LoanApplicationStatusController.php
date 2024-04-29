@@ -55,16 +55,16 @@ class LoanApplicationStatusController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Loan $id)
+    public function update(Request $request, String $id)
     {
         //
         $loan = Loan::findorfail($id);
-
+        // dd($request->status);
         if ($request->status == "cancel") {
             $loan->update([
                 'status' => 'rejected'
             ]);
-            $emi = Emi::with('loan')->where('loan_id', $id)->first();
+            $emi = Emi::with('loan')->where('loan_id', $loan->id)->first();
             $emi->delete();
             return redirect()->route('loans.index');
         } else {
@@ -75,39 +75,7 @@ class LoanApplicationStatusController extends Controller
             return redirect()->route('status.index');
         }
 
-        // if ($request->has('reject')) {
-
-
-        //     $loan->update([
-        //         'status' => 'rejected'
-        //     ]);
-
-        //     return redirect()->route('status.index');
-
-        // } else if ($request->has('accept')) {
-
-
-        //     $loan->update([
-        //         'status' => 'accepted'
-        //     ]);
-
-        //     return redirect()->route('status.index');
-        // } 
-        // else {
-
-        //     $loan->update([
-        //         'status' => 'rejected'
-        //     ]);
-
-        //     $emi = Emi::with('loan')->where('loan_id',$id)->first();
-
-        //     // dd($emi);
-
-        //     $emi->delete();
-
-        //     return redirect()->route('loans.index');
-
-        // }
+        
     }
 
     public function disburse(StatusRequest $request)

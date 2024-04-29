@@ -13,6 +13,11 @@ class Loan extends Model
 
     protected $guarded = [];
 
+//     protected $casts = [
+//       'end_date' => 'date', 
+//       'start_date' => 'date', 
+//   ];
+
 
     public function employee(){
 
