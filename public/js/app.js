@@ -42,7 +42,7 @@ $(document).ready(function () {
         $('#loan-id').val(rowData[0]);
         $('#principal').val(rowData[2]);
         $('#interest_rate').val(rowData[3]);
-        $('#repayment_period').val(loanDurationInMonths);
+        $('#loan_duration').val(loanDurationInMonths);
 
         //EMI Calculation
         var emi = principal * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, loanDurationInMonths) / (Math.pow(1 + monthlyInterestRate, loanDurationInMonths) - 1);
@@ -73,6 +73,18 @@ $(document).ready(function () {
         $('#disburment-modal').modal('show');
 
 
+    });
+
+    $('#emi_start').change(function() {
+        var selectedDate = $('#emi_start').val();
+        var numberOfMonths = parseInt($('#loan_duration').val());
+
+        if (selectedDate && !isNaN(numberOfMonths)) {
+            var date = new Date(selectedDate);
+            date.setMonth(date.getMonth() + numberOfMonths);
+            var newDate = date.toISOString().split('T')[0];
+            $('#emi_end').val(newDate);
+        }
     });
 
     $('#reschedule').click(function(){

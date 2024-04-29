@@ -5,7 +5,7 @@
         <hr>
 
         <!-- Basic Details -->
-        <h2 class="fst-italic">Basic Details</h2>
+        <h2 class="fst-italic">Employee Details</h2>
         <table class="table">
             <tr>
                 <th>Name</th>
@@ -35,7 +35,7 @@
         </table>
 
         <!-- Basic Loan Details -->
-        <h2>Basic Loan Details</h2>
+        <h2 class="fst-italic">Employee Loan Details</h2>
         <table class="table">
             <tr>
                 <th>Loan Amount</th>
@@ -61,10 +61,7 @@
                 <th>Loan End Date</th>
                 <td>{{ $loan->end_date }}</td>
             </tr>
-            <tr>
-                <th>Disbursed Date</th>
-                <td>{{ $loan->end_date }}</td>
-            </tr>
+            
             <tr>
                 <th>Status</th>
                 <td><span class="bg-success text-white rounded-3 px-2">Active</span></td>
@@ -73,7 +70,7 @@
         </table>
 
         <!-- EMI Details -->
-        <h2>EMI Details</h2>
+        <h2>Payment Details</h2>
         <div class="accordion" id="accordionExample">
             <div class="accordion-item">
                 <h2 class="accordion-header">

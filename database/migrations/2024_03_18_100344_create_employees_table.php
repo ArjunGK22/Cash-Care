@@ -19,6 +19,7 @@ return new class extends Migration
             $table->date('dob');
             $table->bigInteger('aadhar_no')->unique();
             $table->string('pan_no')->unique();
+            $table->string('status')->default('active');
             $table->timestamps();
         });
     }

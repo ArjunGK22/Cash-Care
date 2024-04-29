@@ -16,7 +16,7 @@ class UserController extends Controller
     public function index()
     {
         //
-        $employee = Employee::all();
+        $employee = Employee::where('status', 'active')->get();
 
         return view('view-emp')->with('userdata', $employee);
     }
@@ -26,43 +26,31 @@ class UserController extends Controller
      */
     public function store(UserPostRequest $request)
     {
-        //create a new employee
-        // $emp_data = $request->validate([
-        //     'name' => 'required|string',
-        //     'phone' => 'required|numeric|min:10|unique:employees,phone',
-        //     'email' => 'required|email|unique:employees,email',
-        //     'dob' => 'required', 
-        //     'aadhar_no' => 'required|numeric|min:12|unique:employees,aadhar_no',
-        //     'pan_no' => 'required|unique:employees,pan_no'
-        // ]);
+
 
         $emp_data = $request->validated();
 
- 
+
         $user = Employee::firstOrcreate($emp_data);
- 
-        if(!$user)
+
+        if (!$user)
             return "Error";
-        
-        return redirect()->route('employees.index');
+
+        return redirect()->route('employees.index')->with('message', 'User Created Successfully!');
     }
 
     /**
      * Display the specified resource.
      */
     public function show(Employee $employee)
-    { 
-        return view('emp-details')->with('empData',$employee);
+    {
+        return view('emp-details')->with('empData', $employee);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
 
-    {
-        echo "heloo";
-    }
 
     /**
      * Update the specified resource in storage.
@@ -70,16 +58,12 @@ class UserController extends Controller
     public function update(UserPostRequest $request, Employee $employee)
     {
 
-        
-        try{
+        try {
 
             $data = $request->validated();
-            
             $employee->update($data);
-    
-            return redirect()->route('employees.index');
-        }
-        catch (Exception $e){
+            return redirect()->route('employees.index')->with('message', 'Employee Details Updated Successfully!');
+        } catch (Exception $e) {
             return $e;
         }
     }
@@ -89,8 +73,31 @@ class UserController extends Controller
      */
     public function destroy(Employee $employee)
     {
-        $employee->delete();
-    
-        return redirect()->route('employees.index')->with('success', 'Employee deleted successfully');
+
+        $loans = $employee->loans;
+
+        if ($loans->isEmpty()) {
+
+            $employee->update(['status' => 'archieved']);
+            return redirect()->route('employees.index')->with('message', 'Employee archieved Successfully!');
+        } else {
+            return redirect()->route('employees.index')->with('message', 'Employee cannot be archieved! As he has existing loan');
+        }
+
+
+        // dd($loans);
+
+        // foreach ($loans as $loan) {
+        //     $loanStatus = $loan->status;
+
+
+        //     if ($loanStatus == 'disbursed') {
+        //         return redirect()->route('employees.index')->with('message', 'Employee cannot be archieved! As he has existing loan');
+        //     } else {
+        //         $employee->update(['status' => 'archieved']);
+        //         return redirect()->route('employees.index')->with('message', 'Employee archieved Successfully!');
+
+        //     }
+        // }
     }
 }

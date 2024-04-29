@@ -35,7 +35,7 @@
                                     <div class="input-group mb-3" id="">
                                         <span class="input-group-text" id="basic-addon3"><i
                                                 class="bi bi-clock-fill"></i></span>
-                                        <input type="text" class="form-control" id="repayment_period"
+                                        <input type="text" class="form-control" id="loan_duration"
                                             name="loan_duration" readonly>
                                     </div>
                                 </div>
@@ -69,7 +69,8 @@
                                 <div class="input-group mb-3" id="">
                                     <span class="input-group-text" id="basic-addon3"><i
                                             class="bi bi-calendar-date"></i></span>
-                                    <input type="date" class="form-control" id="emi_start" name="start_date">
+                                    <input type="date" class="form-control" id="emi_start" name="start_date"
+                                        >
                                 </div>
                             </div>
                             <div class="col">
@@ -77,7 +78,7 @@
                                 <div class="input-group mb-3">
                                     <span class="input-group-text" id="basic-addon1"><i
                                             class="bi bi-calendar-date"></i></span>
-                                    <input type="date" class="form-control" id="emi_end" name="end_date">
+                                    <input type="date" class="form-control" id="emi_end" name="end_date" readonly>
                                 </div>
                             </div>
                         </div>
@@ -85,7 +86,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" name="disburse" value="disburse" class="btn btn-primary">Disburse Amount</button>
+                    <button type="submit" name="disburse" value="disburse" class="btn btn-primary">Disburse
+                        Amount</button>
                 </div>
                 </form>
             </div>
@@ -204,22 +206,24 @@
                                                 <td>{{ ucwords($loan->loan_type) }}</td>
                                                 <td>
                                                     <div class="d-flex">
-                                                        <form action="{{ route('status.update', $loan->id) }}" method="POST">
+                                                        <form action="{{ route('status.update', $loan->id) }}"
+                                                            method="POST">
                                                             @csrf
-                                                            @method('PUT') 
-                                        
-                                                        
-                                                            <!-- Button for reject operation -->
-                                                            <button type="submit" name="status" value="rejected" class="btn" title="Reject">
+                                                            @method('PUT')
+
+
+                                                            <button type="submit" name="status" value="rejected"
+                                                                class="btn" title="Reject">
                                                                 <i class="bi bi-x-circle-fill text-danger fs-5"></i>
                                                             </button>
-                                                        
-                                                            <!-- Button for accept operation -->
-                                                            <button type="submit" name="status" value="accepted" class="btn" title="Accept">
-                                                                <i class="bi bi-hand-thumbs-up-fill text-success fs-5"></i>
+
+                                                            <button type="submit" name="status" value="accepted"
+                                                                class="btn" title="Accept">
+                                                                <i
+                                                                    class="bi bi-hand-thumbs-up-fill text-success fs-5"></i>
                                                             </button>
                                                         </form>
-                                                        
+
                                                     </div>
                                                 </td>
                                             </tr>
@@ -274,10 +278,15 @@
                                                 <td>{{ ucwords($loan->loan_type) }}</td>
                                                 <td>
                                                     <div class="d-flex">
-                                                       
-                                                        <a href="reject/{{ $loan->id }}" class="btn"
-                                                            title="reject"><i
-                                                                class="bi bi-x-circle-fill text-danger fs-5"></i></a>
+                                                        <form action="{{ route('status.update', $loan->id) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <button type="submit" name="status" value="rejected"
+                                                                class="btn" title="Reject">
+                                                                <i class="bi bi-x-circle-fill text-danger fs-5"></i>
+                                                            </button>
+                                                        </form>
                                                         <a href="" id="disburse" class="btn"
                                                             title="disburse" data-loan-id="{{ $loan->id }}"
                                                             data-loan-period="{{ $loan->repayment_period }}"><i
@@ -316,6 +325,7 @@
                                     <th>Interest Rate</th>
                                     <th>Status</th>
                                     <th>Loan Type</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
 
@@ -331,6 +341,21 @@
                                                     class="rounded-pill bg-danger fs-6 text-white px-2">{{ $loan->status }}</span>
                                             </td>
                                             <td>{{ ucwords($loan->loan_type) }}</td>
+                                            <td>
+                                                <form action="{{ route('status.update', $loan->id) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('PUT')
+
+
+                                                    <!-- Button for accept operation -->
+                                                    <button type="submit" name="status" value="accepted"
+                                                        class="btn" title="Accept">
+                                                        <i class="bi bi-hand-thumbs-up-fill text-success fs-5"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+
                                         </tr>
                                     @endif
                                 @endforeach

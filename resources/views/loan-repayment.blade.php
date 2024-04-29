@@ -13,6 +13,8 @@
             </nav>
         </div>
 
+        <x-message />
+
 
         <div class="repayments">
             <table class="table table-bordered" id="table">
@@ -35,7 +37,7 @@
                                 <td>{{ $emi->loan->id }}</td>
                                 <td>{{ $emi->emi_amount }}</td>
                                 <td>{{ $emi->remaining_emi_balance }}</td>
-                                <td>{{ $emi->payment_status }}</td> <!-- Accessing emi directly from $repays -->
+                                <td>{{ $emi->payment_status }}</td>
                                 <td>{{ $emi->due_date }}</td>
                            
                                 <td>
