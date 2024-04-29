@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use auth;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
+
 
 class LoginController extends Controller
 {
@@ -34,5 +36,11 @@ class LoginController extends Controller
         }
 
         
+    }
+    
+    public function logout(Request $request)
+    {
+        Auth::logout(); // Clear the authenticated user's session
+        return redirect('/');
     }
 }

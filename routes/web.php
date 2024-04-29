@@ -50,3 +50,4 @@ Route::prefix('/loans/repayment')->group(function(){
 
 //login route
 Route::post('/login',[LoginController::class, 'login']);
+Route::get('/logout',[LoginController::class, 'logout']);

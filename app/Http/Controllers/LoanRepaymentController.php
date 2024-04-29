@@ -94,7 +94,7 @@ class LoanRepaymentController extends Controller
                 'payment_date' => now(),
             ]);
         }
-        return redirect('/loans');
+        return redirect()->route('repayment.index')->with('message', 'Payment Done successfully!');
     }
 
 
