@@ -38,6 +38,8 @@ class LoanRepaymentController extends Controller
         $emi = Emi::find($request->emi_id);
         $remaining_balance = intval($request->emi_payable - $request->emi_paid);
 
+        // dd($emi->billing_date);
+
         if ($remaining_balance == 0) {
             //check whether its a last emi
             if ($emi['remaining_emi'] - 1 == 0) {
@@ -63,13 +65,17 @@ class LoanRepaymentController extends Controller
                     'remaining_emi_balance' => 0
                 ]);
 
-                $next_emi_date = Carbon::now()->addMonth()->startOfMonth()->addDays(4);
+                // $next_emi_date = Carbon::now()->addMonth()->startOfMonth()->addDays(4);
+                $next_emi_date = Carbon::createFromFormat('Y-m-d', $emi->billing_date)->addMonth()->toDateString();
+
+                // dd(Carbon::createFromFormat('Y-m-d', $next_emi_date)->addDays(10)->toDateString());
+
                 $emi->create([
                     'loan_id' => $request->loan_id,
                     'emi_number' => $emi['emi_number'] + 1,
                     'emi_amount' => $emi['emi_amount'],
                     'billing_date' => $next_emi_date,
-                    'due_date' => Carbon::now()->addMonth()->startOfMonth()->addDays(14),
+                    'due_date' => Carbon::createFromFormat('Y-m-d', $next_emi_date)->addDays(10)->toDateString(),
                     'remaining_emi_balance' => $emi['emi_amount'],
                     'payment_status' => 'unpaid',
                     'remaining_emi' => $emi['remaining_emi'] - 1
